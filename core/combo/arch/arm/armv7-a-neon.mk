@@ -10,7 +10,7 @@ ifeq ($(strip $(TARGET_CPU_VARIANT)), cortex-a15)
 	arch_variant_cflags := -mcpu=cortex-a15
 else
 ifeq ($(strip $(TARGET_CPU_VARIANT)),cortex-a9)
-	# OpenMyGlass: tune for the Cortex-A9 (OMAP4) instead of generic ARMv7-A.
+# OpenMyGlass: tune for the Cortex-A9 (OMAP4) instead of generic ARMv7-A.
 	arch_variant_cflags := -mcpu=cortex-a9
 else
 ifeq ($(strip $(TARGET_CPU_VARIANT)),cortex-a8)
