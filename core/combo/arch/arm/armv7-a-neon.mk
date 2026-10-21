@@ -9,6 +9,10 @@ ARCH_ARM_HAVE_NEON              := true
 ifeq ($(strip $(TARGET_CPU_VARIANT)), cortex-a15)
 	arch_variant_cflags := -mcpu=cortex-a15
 else
+ifeq ($(strip $(TARGET_CPU_VARIANT)),cortex-a9)
+	# OpenMyGlass: tune for the Cortex-A9 (OMAP4) instead of generic ARMv7-A.
+	arch_variant_cflags := -mcpu=cortex-a9
+else
 ifeq ($(strip $(TARGET_CPU_VARIANT)),cortex-a8)
 	arch_variant_cflags := -mcpu=cortex-a8
 else
@@ -19,10 +23,17 @@ else
 endif
 endif
 endif
+endif
 
 arch_variant_cflags += \
     -mfloat-abi=softfp \
     -mfpu=neon
 
+ifeq ($(strip $(TARGET_CPU_VARIANT)),cortex-a9)
+# OpenMyGlass: the Cortex-A8 branch erratum workaround is not needed on the A9.
+arch_variant_ldflags := \
+	-Wl,--no-fix-cortex-a8
+else
 arch_variant_ldflags := \
 	-Wl,--fix-cortex-a8
+endif
