@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+# OpenMyGlass: checks for our changes to the 6.0 build system. The full AOSP build runs from
+# OpenMyGlass/manifest, branch android-6.0.
+name: check
+on:
+  push:
+    branches: [glass-6.0]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Shell scripts
+        run: shellcheck -s sh tests/*.sh
+      - name: Tests
+        run: for t in tests/test_*.sh; do sh "$t" || exit 1; done
