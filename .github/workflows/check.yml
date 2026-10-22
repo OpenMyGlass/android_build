@@ -16,6 +16,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Fetch the cherry-pick sources
+        run: git fetch -q origin aosp-6.0
+      - name: Only unchanged cherry-picks on top of AOSP
+        run: sh tests/check_cherry_picks.sh 5806573811f023427012329248759979800686be
       - name: Shell scripts
         run: shellcheck -s sh tests/*.sh
       - name: Tests
